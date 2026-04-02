@@ -734,15 +734,10 @@ function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
-  .then(() => {
+  .finally(() => {
     document.getElementById('form-body').style.display = 'none';
     document.getElementById('progress-bar').style.display = 'none';
     document.getElementById('success').style.display = 'block';
-  })
-  .catch(() => {
-    btn.textContent = 'Envoyer ma réponse →';
-    btn.disabled = false;
-    alert('Une erreur est survenue. Vérifie ta connexion et réessaie.');
   });
 }
 </script>
