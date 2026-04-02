@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgriMatch.AI — Profil Investisseur · GITEX Africa</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green: #1FAD74;
+    --green-light: #2ED991;
+    --green-dim: rgba(31,173,116,0.12);
+    --gold: #C9A84C;
+    --bg: #0C0E0B;
+    --bg2: #131610;
+    --bg3: #1A1E18;
+    --surface: #1E2320;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.18);
+    --text: #F0EFE8;
+    --muted: #7A8070;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% -10%, rgba(31,173,116,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 10% 90%, rgba(201,168,76,0.05) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-mark svg { width: 18px; height: 18px; fill: #fff; }
+  .logo-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .badge {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 0.5px solid rgba(201,168,76,0.35);
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+  .header-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .header-title em { font-style: italic; color: var(--green-light); }
+  .header-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    display: flex; gap: 4px; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .pb-seg {
+    height: 3px; flex: 1; border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s ease;
+  }
+  .pb-seg.active { background: var(--green); }
+
+  /* SECTION */
+  .section {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.15s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.25s; }
+  .section:nth-child(5) { animation-delay: 0.3s; }
+
+  .sec-num {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .sec-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .q { margin-bottom: 1.25rem; }
+  .q:last-child { margin-bottom: 0; }
+  .q-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .hint { font-size: 11px; color: rgba(122,128,112,0.7); }
+
+  /* CHIPS */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 0.5px solid var(--border);
+    font-size: 13px;
+    cursor: pointer;
+    color: rgba(240,239,232,0.65);
+    background: transparent;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-family: var(--sans);
+  }
+  .chip:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+  .chip.sel {
+    background: var(--green-dim);
+    border-color: rgba(31,173,116,0.5);
+    color: var(--green-light);
+  }
+  .chip.sel-gold {
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.4);
+    color: var(--gold);
+  }
+
+  /* RADIO ROW */
+  .radio-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .r-btn {
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 0.5px solid var(--border);
+    font-size: 13px;
+    cursor: pointer;
+    color: rgba(240,239,232,0.65);
+    background: transparent;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-family: var(--sans);
+  }
+  .r-btn:hover { border-color: var(--border-hover); color: var(--text); background: rgba(255,255,255,0.04); }
+  .r-btn.sel { background: var(--green-dim); border-color: rgba(31,173,116,0.5); color: var(--green-light); }
+
+  /* AGRI INTEREST 4-grid */
+  .interest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .int-btn {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    color: rgba(240,239,232,0.6);
+    background: transparent;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-family: var(--sans);
+  }
+  .int-btn:hover { border-color: var(--border-hover); color: var(--text); background: rgba(255,255,255,0.04); }
+  .int-btn.sel-1 { background: rgba(31,173,116,0.14); border-color: rgba(31,173,116,0.5); color: var(--green-light); }
+  .int-btn.sel-2 { background: rgba(55,138,221,0.12); border-color: rgba(55,138,221,0.4); color: #85B7EB; }
+  .int-btn.sel-3 { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.35); color: var(--gold); }
+  .int-btn.sel-4 { background: rgba(226,75,74,0.1); border-color: rgba(226,75,74,0.35); color: #F09595; }
+
+  /* DRAG RANK */
+  .rank-list { display: flex; flex-direction: column; gap: 6px; }
+  .rank-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg3);
+    cursor: grab;
+    transition: border-color 0.15s, opacity 0.15s;
+    font-size: 13px;
+    color: var(--text);
+    user-select: none;
+  }
+  .rank-item:hover { border-color: var(--border-hover); }
+  .rank-item.dragging { opacity: 0.35; border-color: var(--green); }
+  .rank-item.drag-over { border-color: var(--green); background: var(--green-dim); }
+  .rk-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500;
+    color: var(--muted); flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .rank-item:nth-child(-n+3) .rk-num {
+    background: var(--green-dim);
+    border-color: rgba(31,173,116,0.4);
+    color: var(--green-light);
+  }
+  .drag-icon { color: var(--muted); font-size: 14px; margin-right: 2px; }
+
+  /* INPUTS */
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .field {
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .field label { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+  input[type="text"], input[type="email"] {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: var(--sans);
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  input:focus { border-color: rgba(31,173,116,0.5); }
+  input::placeholder { color: rgba(122,128,112,0.5); }
+
+  /* SUBMIT */
+  .submit-wrap { margin-top: 1rem; }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--green);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    font-family: var(--sans);
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: opacity 0.15s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.985); }
+
+  /* CONSENT */
+  .consent {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* SUCCESS */
+  #success {
+    display: none;
+    text-align: center;
+    padding: 4rem 1rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .check-ring {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 1.5px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    animation: pop 0.4s 0.1s cubic-bezier(.175,.885,.32,1.275) both;
+  }
+  .check-ring svg { width: 28px; height: 28px; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .success-title { font-family: var(--serif); font-size: 30px; margin-bottom: 0.75rem; }
+  .success-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 320px; margin: 0 auto; }
+
+  /* DIVIDER */
+  .divider { height: 0.5px; background: var(--border); margin: 1.25rem 0; }
+
+  /* KEYFRAMES */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 480px) {
+    .input-grid { grid-template-columns: 1fr; }
+    .interest-grid { grid-template-columns: 1fr 1fr; }
+    .header-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1 14.5v-5l-3 1.5 3-7 1 4 3-1.5-4 8z"/></svg>
+      </div>
+      <span class="logo-name">AgriMatch.AI</span>
+      <span class="badge">GITEX Africa</span>
+    </div>
+    <h1 class="header-title">Profil <em>investisseur</em><br>— 2 minutes</h1>
+    <p class="header-sub">Aidez-nous à mieux vous connaître pour explorer des synergies concrètes. Vos réponses sont traitées en temps réel par notre équipe.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar" id="progress-bar">
+    <div class="pb-seg active" id="seg0"></div>
+    <div class="pb-seg" id="seg1"></div>
+    <div class="pb-seg" id="seg2"></div>
+    <div class="pb-seg" id="seg3"></div>
+    <div class="pb-seg" id="seg4"></div>
+  </div>
+
+  <!-- FORM -->
+  <div id="form-body">
+
+  <!-- S1 -->
+  <div class="section">
+    <div class="sec-num">01</div>
+    <div class="sec-title">Profil investisseur</div>
+
+    <div class="q">
+      <div class="q-label">Type d'investisseur</div>
+      <div class="chips" id="g-type">
+        <span class="chip" data-v="VC">VC</span>
+        <span class="chip" data-v="Family Office">Family Office</span>
+        <span class="chip" data-v="Corporate VC">Corporate VC</span>
+        <span class="chip" data-v="Angel Investor">Angel Investor</span>
+        <span class="chip" data-v="Private Equity">Private Equity</span>
+        <span class="chip" data-v="Autre">Autre</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Taille de ticket typique</div>
+      <div class="radio-row" id="g-ticket">
+        <span class="r-btn" data-v="<100K">&lt;$100K</span>
+        <span class="r-btn" data-v="100K-500K">$100K–$500K</span>
+        <span class="r-btn" data-v="500K-2M">$500K–$2M</span>
+        <span class="r-btn" data-v="2M-10M">$2M–$10M</span>
+        <span class="r-btn" data-v=">10M">&gt;$10M</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Stades d'investissement préférés</div>
+      <div class="chips" id="g-stage">
+        <span class="chip" data-v="Pre-seed">Pre-seed</span>
+        <span class="chip" data-v="Seed">Seed</span>
+        <span class="chip" data-v="Series A">Series A</span>
+        <span class="chip" data-v="Series B+">Series B+</span>
+        <span class="chip" data-v="Growth">Growth</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="section">
+    <div class="sec-num">02</div>
+    <div class="sec-title">Appétit sectoriel</div>
+
+    <div class="q">
+      <div class="q-label">Secteurs d'intérêt <span class="hint">(max 3)</span></div>
+      <div class="chips" id="g-sector">
+        <span class="chip" data-v="AgriTech">AgriTech</span>
+        <span class="chip" data-v="FinTech">FinTech</span>
+        <span class="chip" data-v="HealthTech">HealthTech</span>
+        <span class="chip" data-v="EdTech">EdTech</span>
+        <span class="chip" data-v="CleanTech">CleanTech</span>
+        <span class="chip" data-v="Logistics">Logistics</span>
+        <span class="chip" data-v="E-commerce">E-commerce</span>
+        <span class="chip" data-v="B2B SaaS">B2B SaaS</span>
+        <span class="chip" data-v="Autre">Autre</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Intérêt pour AgriMatch spécifiquement</div>
+      <div class="interest-grid" id="g-agri">
+        <div class="int-btn" data-v="Très intéressé" data-cls="sel-1">Très intéressé</div>
+        <div class="int-btn" data-v="Modérément intéressé" data-cls="sel-2">Modérément intéressé</div>
+        <div class="int-btn" data-v="Peu intéressé" data-cls="sel-3">Peu intéressé</div>
+        <div class="int-btn" data-v="Pas du tout" data-cls="sel-4">Pas du tout</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Sous-secteurs AgriTech prioritaires</div>
+      <div class="chips" id="g-subsector">
+        <span class="chip" data-v="Supply chain">Supply chain</span>
+        <span class="chip" data-v="Financement agricole">Financement agricole</span>
+        <span class="chip" data-v="Precision farming">Precision farming</span>
+        <span class="chip" data-v="Marketplaces">Marketplaces</span>
+        <span class="chip" data-v="Agro-processing">Agro-processing</span>
+        <span class="chip" data-v="Irrigation / Water tech">Irrigation / Water tech</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div class="section">
+    <div class="sec-num">03</div>
+    <div class="sec-title">Opportunités de collaboration</div>
+
+    <div class="q">
+      <div class="q-label">Êtes-vous ouvert au co-investissement ?</div>
+      <div class="radio-row" id="g-coinvest">
+        <span class="r-btn" data-v="Oui, activement">Oui, activement</span>
+        <span class="r-btn" data-v="Oui, au cas par cas">Oui, au cas par cas</span>
+        <span class="r-btn" data-v="Non">Non</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Intérêt pour le deal-flow sharing ?</div>
+      <div class="radio-row" id="g-dealflow">
+        <span class="r-btn" data-v="Oui">Oui</span>
+        <span class="r-btn" data-v="Peut-être">Peut-être</span>
+        <span class="r-btn" data-v="Non">Non</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Vous cherchez des partenaires pour</div>
+      <div class="chips" id="g-partner">
+        <span class="chip" data-v="Due diligence locale">Due diligence locale</span>
+        <span class="chip" data-v="Post-investment support">Post-investment support</span>
+        <span class="chip" data-v="Accès au marché">Accès au marché</span>
+        <span class="chip" data-v="Expertise sectorielle">Expertise sectorielle</span>
+        <span class="chip" data-v="Rien de spécifique">Rien de spécifique</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="section">
+    <div class="sec-num">04</div>
+    <div class="sec-title">Critères de décision</div>
+
+    <div class="q">
+      <div class="q-label">Classez par ordre d'importance <span class="hint">(glisser-déposer · les 3 premiers seront retenus)</span></div>
+      <div class="rank-list" id="rank-list">
+        <div class="rank-item" draggable="true" data-v="Équipe fondatrice">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">1</div>
+          Équipe fondatrice
+        </div>
+        <div class="rank-item" draggable="true" data-v="Traction / Revenus">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">2</div>
+          Traction / Revenus
+        </div>
+        <div class="rank-item" draggable="true" data-v="Innovation technologique">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">3</div>
+          Innovation technologique
+        </div>
+        <div class="rank-item" draggable="true" data-v="Taille du marché">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">4</div>
+          Taille du marché
+        </div>
+        <div class="rank-item" draggable="true" data-v="Impact social / ESG">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">5</div>
+          Impact social / ESG
+        </div>
+        <div class="rank-item" draggable="true" data-v="Scalabilité">
+          <span class="drag-icon">⠿</span>
+          <div class="rk-num">6</div>
+          Scalabilité
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="section">
+    <div class="sec-num">05</div>
+    <div class="sec-title">Coordonnées</div>
+
+    <div class="q">
+      <div class="input-grid">
+        <div class="field">
+          <label>Nom</label>
+          <input type="text" id="f-nom" placeholder="Votre nom" />
+        </div>
+        <div class="field">
+          <label>Organisation</label>
+          <input type="text" id="f-org" placeholder="Nom du fonds / société" />
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="contact@exemple.com" />
+      </div>
+      <div class="field">
+        <label>LinkedIn <span style="color:rgba(122,128,112,0.5)">(optionnel)</span></label>
+        <input type="text" id="f-linkedin" placeholder="linkedin.com/in/..." />
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" onclick="submitForm()">Envoyer ma réponse →</button>
+      <p class="consent">En soumettant ce formulaire, vous acceptez d'être recontacté par l'équipe AgriMatch.AI. Vos données ne seront pas partagées avec des tiers.</p>
+    </div>
+  </div>
+
+  </div><!-- /form-body -->
+
+  <!-- SUCCESS -->
+  <div id="success">
+    <div class="check-ring">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h2 class="success-title">Merci !</h2>
+    <p class="success-sub">Vos réponses ont bien été enregistrées. L'équipe AgriMatch vous contactera dans les 24h.</p>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+const state = {};
+
+/* Multi-select chips */
+['g-type','g-stage','g-sector','g-subsector','g-partner'].forEach(id => {
+  const key = id.replace('g-','');
+  state[key] = [];
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      if (key === 'sector') {
+        const sels = el.querySelectorAll('.chip.sel');
+        if (!c.classList.contains('sel') && sels.length >= 3) return;
+      }
+      c.classList.toggle('sel');
+      state[key] = [...el.querySelectorAll('.chip.sel')].map(x => x.dataset.v);
+      updateProgress();
+    });
+  });
+});
+
+/* Radio chips */
+['g-ticket','g-coinvest','g-dealflow'].forEach(id => {
+  const key = id.replace('g-','');
+  state[key] = null;
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelectorAll('.r-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      el.querySelectorAll('.r-btn').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      state[key] = b.dataset.v;
+      updateProgress();
+    });
+  });
+});
+
+/* AgriMatch interest */
+state.agri = null;
+document.getElementById('g-agri').querySelectorAll('.int-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.getElementById('g-agri').querySelectorAll('.int-btn').forEach(x => {
+      x.className = 'int-btn';
+    });
+    b.classList.add(b.dataset.cls);
+    state.agri = b.dataset.v;
+    updateProgress();
+  });
+});
+
+/* Drag rank */
+state.criteria = ["Équipe fondatrice","Traction / Revenus","Innovation technologique","Taille du marché","Impact social / ESG","Scalabilité"];
+const rl = document.getElementById('rank-list');
+let dragSrc = null;
+
+rl.querySelectorAll('.rank-item').forEach(item => {
+  item.addEventListener('dragstart', () => { dragSrc = item; setTimeout(() => item.classList.add('dragging'), 0); });
+  item.addEventListener('dragend', () => { item.classList.remove('dragging'); updateRankNums(); });
+  item.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (dragSrc === item) return;
+    const rect = item.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    if (e.clientY < mid) rl.insertBefore(dragSrc, item);
+    else rl.insertBefore(dragSrc, item.nextSibling);
+  });
+  /* Touch */
+  let touchY = 0;
+  item.addEventListener('touchstart', e => { dragSrc = item; touchY = e.touches[0].clientY; }, {passive:true});
+  item.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const ty = e.touches[0].clientY;
+    const items = [...rl.querySelectorAll('.rank-item')];
+    const target = items.find(it => {
+      if (it === dragSrc) return false;
+      const r = it.getBoundingClientRect();
+      return ty >= r.top && ty <= r.bottom;
+    });
+    if (target) {
+      const rect = target.getBoundingClientRect();
+      if (ty < rect.top + rect.height / 2) rl.insertBefore(dragSrc, target);
+      else rl.insertBefore(dragSrc, target.nextSibling);
+      updateRankNums();
+    }
+  }, {passive:false});
+  item.addEventListener('touchend', () => { updateRankNums(); updateProgress(); });
+});
+
+function updateRankNums() {
+  rl.querySelectorAll('.rank-item').forEach((item, i) => {
+    item.querySelector('.rk-num').textContent = i + 1;
+    state.criteria[i] = item.dataset.v;
+  });
+}
+
+/* Email input progress */
+document.getElementById('f-email').addEventListener('input', updateProgress);
+
+function updateProgress() {
+  const checks = [
+    state.type.length > 0 || state.ticket || state.stage.length > 0,
+    state.sector.length > 0 || state.agri != null,
+    state.coinvest != null || state.dealflow != null,
+    true,
+    document.getElementById('f-email').value.includes('@')
+  ];
+  checks.forEach((ok, i) => {
+    document.getElementById('seg' + i).classList.toggle('active', ok);
+  });
+}
+
+function submitForm() {
+  const email = document.getElementById('f-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('f-email').focus();
+    document.getElementById('f-email').style.borderColor = 'rgba(226,75,74,0.6)';
+    setTimeout(() => document.getElementById('f-email').style.borderColor = '', 2000);
+    return;
+  }
+  const payload = {
+    timestamp: new Date().toISOString(),
+    profil: {
+      type: state.type,
+      ticket: state.ticket,
+      stades: state.stage
+    },
+    sectoriel: {
+      secteurs: state.sector,
+      interet_agrimatch: state.agri,
+      subsecteurs: state.subsector
+    },
+    collaboration: {
+      coinvestissement: state.coinvest,
+      dealflow: state.dealflow,
+      partenariats: state.partner
+    },
+    criteres_top3: state.criteria.slice(0, 3),
+    contact: {
+      nom: document.getElementById('f-nom').value.trim(),
+      organisation: document.getElementById('f-org').value.trim(),
+      email: email,
+      linkedin: document.getElementById('f-linkedin').value.trim()
+    }
+  };
+
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Envoi en cours…';
+  btn.disabled = true;
+
+  fetch('https://submit-form.com/20bixg77v', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Erreur réseau');
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('progress-bar').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  })
+  .catch(() => {
+    btn.textContent = 'Envoyer ma réponse →';
+    btn.disabled = false;
+    alert('Une erreur est survenue. Vérifie ta connexion et réessaie.');
+  });
+}
+</script>
+</body>
+</html>
