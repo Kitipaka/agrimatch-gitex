@@ -734,8 +734,7 @@ function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
-  .then(res => {
-    if (!res.ok) throw new Error('Erreur réseau');
+  .then(() => {
     document.getElementById('form-body').style.display = 'none';
     document.getElementById('progress-bar').style.display = 'none';
     document.getElementById('success').style.display = 'block';
